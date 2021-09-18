@@ -21,24 +21,24 @@ func NewUserUseCase(userRepository repository.UserRepository) UserUsecase {
 	}
 }
 
-func (uu userUsecase) GetUserByID(id int) (*model.User, error) {
-	user, err := uu.userRepository.FindById(id)
+func (u userUsecase) GetUserByID(id int) (*model.User, error) {
+	user, err := u.userRepository.FindById(id)
 	if err != nil {
 		return nil, err
 	}
 	return user, nil
 }
 
-func (uu userUsecase) GetUserList() ([]model.User, error) {
-	users, err := uu.userRepository.FindAll()
+func (u userUsecase) GetUserList() ([]model.User, error) {
+	users, err := u.userRepository.FindAll()
 	if err != nil {
 		return nil, err
 	}
 	return users, nil
 }
 
-func (uu userUsecase) AddUser(user *model.User) (int, error) {
-	id, err := uu.userRepository.Save(user)
+func (u userUsecase) AddUser(user *model.User) (int, error) {
+	id, err := u.userRepository.Save(user)
 	if err != nil {
 		return 0, err
 	}
