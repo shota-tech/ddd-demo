@@ -21,7 +21,7 @@ func NewUserUseCase(userRepository repository.UserRepository) UserUsecase {
 	}
 }
 
-func (u userUsecase) GetUserByID(id int) (*model.User, error) {
+func (u *userUsecase) GetUserByID(id int) (*model.User, error) {
 	user, err := u.userRepository.FindById(id)
 	if err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func (u userUsecase) GetUserByID(id int) (*model.User, error) {
 	return user, nil
 }
 
-func (u userUsecase) GetUserList() ([]model.User, error) {
+func (u *userUsecase) GetUserList() ([]model.User, error) {
 	users, err := u.userRepository.FindAll()
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (u userUsecase) GetUserList() ([]model.User, error) {
 	return users, nil
 }
 
-func (u userUsecase) AddUser(user *model.User) (int, error) {
+func (u *userUsecase) AddUser(user *model.User) (int, error) {
 	id, err := u.userRepository.Save(user)
 	if err != nil {
 		return 0, err

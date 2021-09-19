@@ -11,7 +11,7 @@ func NewUserRepository() repository.UserRepository {
 	return &userRepository{}
 }
 
-func (r userRepository) FindById(id int) (*model.User, error) {
+func (r *userRepository) FindById(id int) (*model.User, error) {
 	// TODO
 	dummyUser := &model.User{
 		ID:    1,
@@ -21,7 +21,7 @@ func (r userRepository) FindById(id int) (*model.User, error) {
 	return dummyUser, nil
 }
 
-func (r userRepository) FindAll() ([]model.User, error) {
+func (r *userRepository) FindAll() ([]model.User, error) {
 	// TODO
 	dummyUsers := []model.User{
 		{
@@ -43,7 +43,7 @@ func (r userRepository) FindAll() ([]model.User, error) {
 	return dummyUsers, nil
 }
 
-func (r userRepository) Save(*model.User) (int, error) {
+func (r *userRepository) Save(*model.User) (int, error) {
 	// TODO
 	return 1, nil
 }

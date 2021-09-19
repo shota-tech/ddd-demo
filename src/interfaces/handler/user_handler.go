@@ -25,7 +25,7 @@ func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
 	}
 }
 
-func (h userHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
+func (h *userHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id_ := vars["id"]
 	id, err := strconv.Atoi(id_)
@@ -42,7 +42,7 @@ func (h userHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func (h userHandler) GetUserList(w http.ResponseWriter, r *http.Request) {
+func (h *userHandler) GetUserList(w http.ResponseWriter, r *http.Request) {
 	users, err := h.userUsecase.GetUserList()
 	res, err := json.Marshal(users)
 	if err != nil {
@@ -51,7 +51,7 @@ func (h userHandler) GetUserList(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func (h userHandler) AddUser(w http.ResponseWriter, r *http.Request) {
+func (h *userHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	// TODO
 	http.Error(w, "NOT IMPLEMENTED", 500)
 }
