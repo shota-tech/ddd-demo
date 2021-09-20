@@ -17,13 +17,13 @@ func main() {
 	userHandler := handler.NewUserHandler(userUsecase)
 
 	router := mux.NewRouter()
-	router.HandleFunc("/user/{id}", userHandler.GetUserByID).Methods("GET")
-	router.HandleFunc("/user", userHandler.GetUserList).Methods("GET")
-	router.HandleFunc("/user", userHandler.AddUser).Methods("POST")
+	router.HandleFunc("/users/{id}", userHandler.GetUserByID).Methods("GET")
+	router.HandleFunc("/users", userHandler.GetUserList).Methods("GET")
+	router.HandleFunc("/users", userHandler.AddUser).Methods("POST")
 
 	server := &http.Server{
 		Handler:      router,
-		Addr:         "127.0.0.1:8080",
+		Addr:         ":8080",
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
