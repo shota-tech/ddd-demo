@@ -1,49 +1,55 @@
 package infra
 
 import (
+	"database/sql"
+
 	"github.com/shota-tech/layered-architecture-demo/src/domain/model"
 	"github.com/shota-tech/layered-architecture-demo/src/domain/repository"
 )
 
-type userRepository struct{}
+type userRepository struct {
+	db *sql.DB
+}
 
-func NewUserRepository() repository.UserRepository {
-	return &userRepository{}
+func NewUserRepository(db *sql.DB) repository.UserRepository {
+	return &userRepository{
+		db: db,
+	}
 }
 
 func (r *userRepository) FindById(id int) (*model.User, error) {
-	// TODO
-	dummyUser := &model.User{
-		ID:    1,
-		Name:  "user1",
-		Email: "user1@sample.com",
+	user := model.User{}
+	sql := "SELECT id, name, email FROM users WHERE id = $1"
+	err := r.db.QueryRow(sql, id).Scan(&user.ID, &user.Name, &user.Email)
+	if err != nil {
+		return nil, err
 	}
-	return dummyUser, nil
+	return &user, nil
 }
 
 func (r *userRepository) FindAll() ([]model.User, error) {
-	// TODO
-	dummyUsers := []model.User{
-		{
-			ID:    1,
-			Name:  "user1",
-			Email: "user1@sample.com",
-		},
-		{
-			ID:    2,
-			Name:  "user2",
-			Email: "user2@sample.com",
-		},
-		{
-			ID:    3,
-			Name:  "user3",
-			Email: "user3@sample.com",
-		},
+	users := []model.User{}
+	sql := "SELECT id, name, email FROM users"
+	rows, err := r.db.Query(sql)
+	if err != nil {
+		return nil, err
 	}
-	return dummyUsers, nil
+	for rows.Next() {
+		user := model.User{}
+		err = rows.Scan(&user.ID, &user.Name, &user.Email)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+	return users, nil
 }
 
-func (r *userRepository) Save(*model.User) (int, error) {
-	// TODO
-	return 1, nil
+func (r *userRepository) Save(user *model.User) (int, error) {
+	sql := "INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id"
+	err := r.db.QueryRow(sql, user.Name, user.Email).Scan(&user.ID)
+	if err != nil {
+		return 0, err
+	}
+	return user.ID, nil
 }
