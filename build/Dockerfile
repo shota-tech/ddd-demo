@@ -18,4 +18,4 @@ WORKDIR /
 
 COPY --from=builder /app/layered-architecture-demo .
 
-ENTRYPOINT ["/layered-architecture-demo"]
+CMD ["/layered-architecture-demo"]
