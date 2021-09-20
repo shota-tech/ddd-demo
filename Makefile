@@ -1,11 +1,11 @@
 .PHONY: build
 build:
-	docker build -t layered-architecture-demo -f ./build/Dockerfile .
+	docker-compose -f ./build/docker-compose.yml build --no-cache
 
 .PHONY: run
 run:
-	docker run -d -p 8080:8080 --rm --name layered-architecture-demo layered-architecture-demo
+	docker-compose -f ./build/docker-compose.yml up -d
 
 .PHONY: stop
 stop:
-	docker stop layered-architecture-demo
+	docker-compose -f ./build/docker-compose.yml down -v
