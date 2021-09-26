@@ -3,10 +3,12 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"path"
 	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/shota-tech/ddd-demo/domain/model"
+	"github.com/shota-tech/ddd-demo/interfaces/dto"
 	"github.com/shota-tech/ddd-demo/usecase"
 )
 
@@ -27,30 +29,58 @@ func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
 }
 
 func (h *userHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id_ := vars["id"]
-	id, err := strconv.Atoi(id_)
+	id, err := strconv.Atoi(mux.Vars(r)["id"])
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
 	}
 
 	user, err := h.userUsecase.GetUserByID(id)
-	res, err := json.Marshal(user)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
+
+	userResponse := dto.UserResponse{
+		ID:    user.ID,
+		Name:  user.Name,
+		Email: user.Email,
+	}
+
+	res, err := json.Marshal(userResponse)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(res)
 }
 
 func (h *userHandler) GetUserList(w http.ResponseWriter, r *http.Request) {
 	users, err := h.userUsecase.GetUserList()
-	res, err := json.Marshal(users)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
+
+	var userResponses []dto.UserResponse
+	for _, user := range users {
+		userResponse := dto.UserResponse{
+			ID:    user.ID,
+			Name:  user.Name,
+			Email: user.Email,
+		}
+		userResponses = append(userResponses, userResponse)
+	}
+
+	res, err := json.Marshal(userResponses)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(res)
 }
 
@@ -59,18 +89,22 @@ func (h *userHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	body := make([]byte, len)
 	r.Body.Read(body)
 
-	var user model.User
-	err := json.Unmarshal(body, &user)
+	var userRequest dto.UserRequest
+	err := json.Unmarshal(body, &userRequest)
 	if err != nil {
 		http.Error(w, err.Error(), 400)
 		return
 	}
 
-	id, err := h.userUsecase.AddUser(&user)
+	user := model.NewUser(userRequest.Name, userRequest.Email)
+
+	id, err := h.userUsecase.AddUser(user)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
+
+	url := path.Join(r.Host, r.URL.Path, strconv.Itoa(id))
+	w.Header().Set("Location", url)
 	w.WriteHeader(201)
 }
