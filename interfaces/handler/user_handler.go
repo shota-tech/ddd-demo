@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -72,6 +71,6 @@ func (h *userHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	res := fmt.Sprintf(`{"id": %s}`, strconv.Itoa(id))
-	w.Write([]byte(res))
+	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(id))
+	w.WriteHeader(201)
 }
