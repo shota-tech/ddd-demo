@@ -1,4 +1,4 @@
-module github.com/shota-tech/layered-architecture-demo
+module github.com/shota-tech/ddd-demo
 
 go 1.16
 

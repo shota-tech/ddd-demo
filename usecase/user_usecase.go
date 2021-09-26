@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"github.com/shota-tech/layered-architecture-demo/domain/model"
-	"github.com/shota-tech/layered-architecture-demo/domain/repository"
+	"github.com/shota-tech/ddd-demo/domain/model"
+	"github.com/shota-tech/ddd-demo/domain/repository"
 )
 
 type UserUsecase interface {

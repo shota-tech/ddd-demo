@@ -8,7 +8,7 @@ COPY go.sum .
 RUN go mod download
 
 COPY . .
-RUN go build -o ./cmd/layered-architecture-demo ./cmd
+RUN go build -o ./cmd/ddd-demo ./cmd
 
 
 # Runtime Container
@@ -16,6 +16,6 @@ FROM alpine:3.14
 
 WORKDIR /
 
-COPY --from=builder /app/cmd/layered-architecture-demo .
+COPY --from=builder /app/cmd/ddd-demo .
 
-CMD ["/layered-architecture-demo"]
+CMD ["/ddd-demo"]

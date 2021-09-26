@@ -9,9 +9,9 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 
-	"github.com/shota-tech/layered-architecture-demo/infra"
-	"github.com/shota-tech/layered-architecture-demo/interfaces/handler"
-	"github.com/shota-tech/layered-architecture-demo/usecase"
+	"github.com/shota-tech/ddd-demo/infra"
+	"github.com/shota-tech/ddd-demo/interfaces/handler"
+	"github.com/shota-tech/ddd-demo/usecase"
 )
 
 func main() {
