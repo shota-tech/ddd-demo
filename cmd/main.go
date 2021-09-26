@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -15,7 +16,8 @@ import (
 )
 
 func main() {
-	dsn := "host=db user=sample_user password=sample_password dbname=sample_db sslmode=disable"
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",
+		"db", "sample_user", "sample_password", "sample_db")
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		log.Fatal(err)
