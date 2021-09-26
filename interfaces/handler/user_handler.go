@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/shota-tech/layered-architecture-demo/src/domain/model"
-	"github.com/shota-tech/layered-architecture-demo/src/usecase"
+	"github.com/shota-tech/layered-architecture-demo/domain/model"
+	"github.com/shota-tech/layered-architecture-demo/usecase"
 )
 
 type UserHandler interface {

@@ -7,7 +7,7 @@ services:
       - db
     build:
       context: ..
-      dockerfile: build/Dockerfile
+      dockerfile: build/layered-architecture-demo/Dockerfile
     ports:
       - 8080:8080
   db:
@@ -20,4 +20,4 @@ services:
       POSTGRES_USER: sample_user
       POSTGRES_PASSWORD: sample_password
     volumes:
-      - ./db:/docker-entrypoint-initdb.d
+      - ./db/sql:/docker-entrypoint-initdb.d

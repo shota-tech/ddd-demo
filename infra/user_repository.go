@@ -3,8 +3,8 @@ package infra
 import (
 	"database/sql"
 
-	"github.com/shota-tech/layered-architecture-demo/src/domain/model"
-	"github.com/shota-tech/layered-architecture-demo/src/domain/repository"
+	"github.com/shota-tech/layered-architecture-demo/domain/model"
+	"github.com/shota-tech/layered-architecture-demo/domain/repository"
 )
 
 type userRepository struct {
