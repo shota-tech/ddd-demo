@@ -53,3 +53,12 @@ func (r *userRepository) Create(user *model.User) (int, error) {
 	}
 	return user.ID, nil
 }
+
+func (r *userRepository) Update(id int, user *model.User) error {
+	sql := "UPDATE users SET name = $1, email = $2 WHERE id = $3"
+	_, err := r.db.Exec(sql, user.Name, user.Email, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}

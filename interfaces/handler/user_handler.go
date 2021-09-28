@@ -16,6 +16,7 @@ type UserHandler interface {
 	GetUserByID(http.ResponseWriter, *http.Request)
 	GetUserList(http.ResponseWriter, *http.Request)
 	AddUser(http.ResponseWriter, *http.Request)
+	EditUser(http.ResponseWriter, *http.Request)
 }
 
 type userHandler struct {
@@ -107,4 +108,33 @@ func (h *userHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	url := path.Join(r.Host, r.URL.Path, strconv.Itoa(id))
 	w.Header().Set("Location", url)
 	w.WriteHeader(201)
+}
+
+func (h *userHandler) EditUser(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+
+	len := r.ContentLength
+	body := make([]byte, len)
+	r.Body.Read(body)
+
+	var userRequest dto.UserRequest
+	err = json.Unmarshal(body, &userRequest)
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+
+	user := model.NewUser(userRequest.Name, userRequest.Email)
+
+	err = h.userUsecase.EditUser(id, user)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	w.WriteHeader(204)
 }

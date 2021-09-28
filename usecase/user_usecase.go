@@ -9,6 +9,7 @@ type UserUsecase interface {
 	GetUserByID(int) (*model.User, error)
 	GetUserList() ([]model.User, error)
 	AddUser(*model.User) (int, error)
+	EditUser(int, *model.User) error
 }
 
 type userUsecase struct {
@@ -43,4 +44,12 @@ func (u *userUsecase) AddUser(user *model.User) (int, error) {
 		return 0, err
 	}
 	return id, nil
+}
+
+func (u *userUsecase) EditUser(id int, user *model.User) error {
+	err := u.userRepository.Update(id, user)
+	if err != nil {
+		return err
+	}
+	return nil
 }
