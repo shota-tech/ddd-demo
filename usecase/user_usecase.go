@@ -38,7 +38,7 @@ func (u *userUsecase) GetUserList() ([]model.User, error) {
 }
 
 func (u *userUsecase) AddUser(user *model.User) (int, error) {
-	id, err := u.userRepository.Save(user)
+	id, err := u.userRepository.Create(user)
 	if err != nil {
 		return 0, err
 	}

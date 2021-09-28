@@ -45,7 +45,7 @@ func (r *userRepository) FindAll() ([]model.User, error) {
 	return users, nil
 }
 
-func (r *userRepository) Save(user *model.User) (int, error) {
+func (r *userRepository) Create(user *model.User) (int, error) {
 	sql := "INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id"
 	err := r.db.QueryRow(sql, user.Name, user.Email).Scan(&user.ID)
 	if err != nil {
