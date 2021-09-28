@@ -29,7 +29,7 @@ func (r *userRepository) FindById(id int) (*model.User, error) {
 
 func (r *userRepository) FindAll() ([]model.User, error) {
 	users := []model.User{}
-	sql := "SELECT id, name, email FROM users"
+	sql := "SELECT id, name, email FROM users ORDER BY id"
 	rows, err := r.db.Query(sql)
 	if err != nil {
 		return nil, err
