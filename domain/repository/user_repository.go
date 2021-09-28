@@ -7,4 +7,5 @@ type UserRepository interface {
 	FindAll() ([]model.User, error)
 	Create(*model.User) (int, error)
 	Update(int, *model.User) error
+	Delete(int) error
 }

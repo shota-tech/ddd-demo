@@ -10,6 +10,7 @@ type UserUsecase interface {
 	GetUserList() ([]model.User, error)
 	AddUser(*model.User) (int, error)
 	EditUser(int, *model.User) error
+	DeleteUser(int) error
 }
 
 type userUsecase struct {
@@ -48,6 +49,14 @@ func (u *userUsecase) AddUser(user *model.User) (int, error) {
 
 func (u *userUsecase) EditUser(id int, user *model.User) error {
 	err := u.userRepository.Update(id, user)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *userUsecase) DeleteUser(id int) error {
+	err := u.userRepository.Delete(id)
 	if err != nil {
 		return err
 	}

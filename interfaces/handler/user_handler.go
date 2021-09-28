@@ -17,6 +17,7 @@ type UserHandler interface {
 	GetUserList(http.ResponseWriter, *http.Request)
 	AddUser(http.ResponseWriter, *http.Request)
 	EditUser(http.ResponseWriter, *http.Request)
+	DeleteUser(http.ResponseWriter, *http.Request)
 }
 
 type userHandler struct {
@@ -131,6 +132,22 @@ func (h *userHandler) EditUser(w http.ResponseWriter, r *http.Request) {
 	user := model.NewUser(userRequest.Name, userRequest.Email)
 
 	err = h.userUsecase.EditUser(id, user)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	w.WriteHeader(204)
+}
+
+func (h *userHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+
+	err = h.userUsecase.DeleteUser(id)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return

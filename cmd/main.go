@@ -32,6 +32,7 @@ func main() {
 	router.HandleFunc("/users", userHandler.GetUserList).Methods("GET")
 	router.HandleFunc("/users", userHandler.AddUser).Methods("POST")
 	router.HandleFunc("/users/{id}", userHandler.EditUser).Methods("PUT")
+	router.HandleFunc("/users/{id}", userHandler.DeleteUser).Methods("DELETE")
 
 	server := &http.Server{
 		Handler:      router,
